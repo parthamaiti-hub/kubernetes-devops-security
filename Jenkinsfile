@@ -7,6 +7,11 @@ pipeline {
               bat "mvn clean package -DskipTests=true"
               archive 'target/*.jar' //so that they can be downloaded later
             }
+       stage('unit test') {
+            steps {
+              bat "mvn test"
+              
+            }    
         }   
     }
 }
