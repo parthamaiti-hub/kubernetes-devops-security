@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment{
         registry = "parthamaiti/numeric-app"
-        registryCredential = '@Nilakash123'        
+        registryCredential = 'parthadockerhubcredential'        
     }
   stages {
       stage('Build Artifact') {
