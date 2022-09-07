@@ -22,9 +22,11 @@ pipeline {
         } 
         stage('Docker buikd and push') {
           steps {
-          	bat 'SET'
-          	run 'docker build -t parthamaiti/numeric-app:"testdocker" .'
-          	run 'docker push parthamaiti/numeric-app:"testdocker"'
+            withDockerRegistry(credentialsId: "docker-hub", url: 
+          	script {
+          	    docker build -t parthamaiti/numeric-app:"testdocker" .
+          	    docker push parthamaiti/numeric-app:"testdocker"
+          	}
           }
         }
           
