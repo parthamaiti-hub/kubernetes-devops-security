@@ -25,7 +25,10 @@ pipeline {
             withDockerRegistry(credentialsId: "docker-hub", url: 
           	script {
           	    docker build -t parthamaiti/numeric-app:"testdocker" .
+          	    }
+          	script {
           	    docker push parthamaiti/numeric-app:"testdocker"
+          	 }
           	}
           }
         }
