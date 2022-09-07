@@ -33,6 +33,14 @@ pipeline {
 	      }
 	    }
 	    
+	    stage('Kubernetes Deployment') -DEV  {
+	      steps{
+	        withKubeConfig([credentialsId: 'kubeconfig']) {
+	          bat "sed -i 's#replace#parthamaiti/numeric-app:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
+	          bat "kubectl apply -f k8s_deployment_service.yaml"
+	        }
+	      }
+	    }
     
           
     }
