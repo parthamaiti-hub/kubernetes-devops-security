@@ -26,7 +26,7 @@ pipeline {
         
         stage('Docker build and Push') {
 	      steps{
-	        withDockerRegistry([credentialId: "docker-hub", url: ""]) {
+	        withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
 	          bat 'docker build -t parthamaiti-hub/numeric-app:"test" .'
 	          bat 'docker push parthamaiti-hub/numeric-app:"test"'
 	        }
