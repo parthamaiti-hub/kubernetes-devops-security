@@ -24,21 +24,15 @@ pipeline {
                 
         } 
         
-        stage('Building image') {
+        stage('Docker build and Push') {
 	      steps{
-	        script {
-	          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+	        withDockerRegistry([credentialId: "docker-hub", url: ""]) {
+	          bat 'docker build -t parthamaiti-hub/numeric-app:"test" .'
+	          bat 'docker push parthamaiti-hub/numeric-app:"test"'
 	        }
 	      }
 	    }
-	    stage('Deploy Image') {
-	      steps{
-	         script {
-	            docker.withRegistry( '', registryCredential ) {
-	            dockerImage.push()
-	          }
-	        }
-        }
+	    
     }
           
     }
