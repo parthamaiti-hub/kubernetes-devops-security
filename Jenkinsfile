@@ -23,8 +23,8 @@ pipeline {
         stage('Docker buikd and push') {
           steps {
           	bat 'SET'
-          	bat 'docker build -t parthamaiti/numeric-app:"testdocker" .'
-          	bat 'docker push parthamaiti/numeric-app:"testdocker"'
+          	run 'docker build -t parthamaiti/numeric-app:"testdocker" .'
+          	run 'docker push parthamaiti/numeric-app:"testdocker"'
           }
         }
           
