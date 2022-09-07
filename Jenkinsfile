@@ -33,6 +33,14 @@ pipeline {
 	      }
 	    }
 	    
+	    stage(' Find kubernetes details') {
+            steps {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                bat 'kubectl get all'
+            }
+            }
+        }
+	    
 	    stage('Kubernetes Deployment -DEV')  {
 	      steps{
 	        withKubeConfig([credentialsId: 'kubeconfig']) {
