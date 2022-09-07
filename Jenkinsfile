@@ -19,6 +19,14 @@ pipeline {
                }
             }
                 
-        }   
+        } 
+        stage('Docker buikd and push') {
+          steps {
+          	bat 'printenv'
+          	bat 'docker build -t parthamaiti/numeric-app:""$GIT_COMMIT"" .'
+          	bat 'docker push parthamaiti/numeric-app:""$GIT_COMMIT""'
+          }
+        }
+          
     }
 }
