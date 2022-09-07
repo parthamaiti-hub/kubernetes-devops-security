@@ -1,6 +1,9 @@
 pipeline {
   agent any
-
+  environment{
+        registry = "parthamaiti/numeric-app"
+        registryCredential = '@Nilakash123'        
+    }
   stages {
       stage('Build Artifact') {
             steps {
@@ -20,18 +23,23 @@ pipeline {
             }
                 
         } 
-        stage('Docker buikd and push') {
-          steps {
-            withDockerRegistry(credentialsId: "docker-hub", url: 
-          	script {
-          	    docker build -t parthamaiti/numeric-app:"testdocker" .
-          	    }
-          	script {
-          	    docker push parthamaiti/numeric-app:"testdocker"
-          	 }
-          	}
-          }
+        
+        stage('Building image') {
+	      steps{
+	        script {
+	          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+	        }
+	      }
+	    }
+	    stage('Deploy Image') {
+	      steps{
+	         script {
+	            docker.withRegistry( '', registryCredential ) {
+	            dockerImage.push()
+	          }
+	        }
         }
+    }
           
     }
 }
