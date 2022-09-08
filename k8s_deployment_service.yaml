@@ -16,7 +16,7 @@ spec:
         app: devsecops
     spec:
       containers:
-      - image: parthamaiti/numeric-app:"test"
+      - image: parthamaiti/numeric-app:test
         name: devsecops-container
 ---
 apiVersion: v1
