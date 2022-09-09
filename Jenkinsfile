@@ -37,6 +37,13 @@ pipeline {
                 
         } 
         
+        stage('Sonarqube scan SAST') {
+            steps {
+              bat "mvn clean verify sonar:sonar -Dsonar.projectKey=appsample -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_b90e7c99939f3711876f6e2bda533669d27cbe25"
+
+            }
+                           
+        } 
         stage('Vulnerability Scan Dependencies check') {
             steps {
               bat "mvn dependency-check:check"
