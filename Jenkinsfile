@@ -37,18 +37,19 @@ pipeline {
                 
         } 
         
-        stage('Mutation testing using PIT') {
+        stage('Vulnerability Scan Dependencies check') {
             steps {
-              bat "mvnorg.pitest:pitest-maven:mutationCoverage"
+              bat "mvndependency-check:check"
             }
             post {
                always {
-                 pitmutationmutationStatsFile: '**/target/pit-reports/**/mutations.xml'       
+                 dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'       
                  			         
                }
             }
                 
         } 
+ 
         
         stage('Docker build and Push') {
 	      steps{
