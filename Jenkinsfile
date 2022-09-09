@@ -39,7 +39,7 @@ pipeline {
         
         stage('Vulnerability Scan Dependencies check') {
             steps {
-              bat "mvndependency-check:check"
+              bat "mvn dependency-check:check"
             }
             post {
                always {
