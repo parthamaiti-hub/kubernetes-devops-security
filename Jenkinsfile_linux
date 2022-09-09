@@ -1,0 +1,81 @@
+pipeline {
+  agent any
+  environment{
+        registry = "parthamaiti/numeric-app"
+        registryCredential = 'docker-hub'        
+    }
+  stages {
+      stage('Build Artifact') {
+            steps {
+              sh "mvn clean package -DskipTests=true"
+              archive 'target/*.jar' //so that they can be downloaded later
+            }
+       }
+       stage('unit test') {
+            steps {
+              sh "mvn test"
+            }
+            post {
+               always {
+                 junit 'target/surefire-reports/*.xml'
+                 jacoco execPattern: 'target/jacoco.exec'
+               }
+            }
+                
+        } 
+        
+        stage('Mutation testing using PIT') {
+            steps {
+              sh "mvn org.pitest:pitest-maven:mutationCoverage"
+            }
+            post {
+               always {
+                 pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'       
+                 			         
+               }
+            }
+                
+        } 
+        
+        stage('Vulnerability Scan Dependencies check') {
+            steps {
+              sh "mvn dependency-check:check"
+            }
+            post {
+               always {
+                 dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'       
+                 			         
+               }
+            }
+                
+        } 
+ 
+        
+        stage('Docker build and Push') {
+	      steps{
+	        withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
+	          sh 'docker build -t parthamaiti/numeric-app:"test" .'
+	          sh 'docker push parthamaiti/numeric-app:"test"'
+	        }
+	      }
+	    }
+	    
+	    stage(' Find kubernetes details') {
+            steps {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                sh 'kubectl get all'
+            }
+            }
+        }
+	    
+	    stage('Kubernetes Deployment -DEV')  {
+	      steps{
+	        withKubeConfig([credentialsId: 'kubeconfig']) {
+	           sh "kubectl apply -f k8s_deployment_service.yaml"
+	        }
+	      }
+	    }
+    
+          
+    }
+}
