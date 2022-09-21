@@ -15,7 +15,7 @@ pipeline {
             steps {
               bat "mvn test"
             }
-            post {
+           post {
                always {
                  junit 'target/surefire-reports/*.xml'
                  jacoco execPattern: 'target/jacoco.exec'
@@ -36,15 +36,15 @@ pipeline {
             }
                 
         } 
-        
+        /*
         stage('Sonarqube scan SAST') {
             steps {
-             // bat "mvn clean verify sonar:sonar -Dsonar.projectKey=appsample -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_148b7e3ab3857e43ff35306a582c545fb0ade313"
+              bat "mvn clean verify sonar:sonar -Dsonar.projectKey=appsample -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_148b7e3ab3857e43ff35306a582c545fb0ade313"
 
             }
                            
         } 
-        
+        */
         /*
         stage('Vulnerability Scan Dependencies check') {
             steps {
