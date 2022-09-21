@@ -44,6 +44,8 @@ pipeline {
             }
                            
         } 
+        
+        /*
         stage('Vulnerability Scan Dependencies check') {
             steps {
               bat "mvn dependency-check:check"
@@ -56,7 +58,7 @@ pipeline {
             }
                 
         } 
- 
+        */
         
         stage('Docker build and Push') {
 	      steps{
