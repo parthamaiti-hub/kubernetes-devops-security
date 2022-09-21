@@ -39,7 +39,7 @@ pipeline {
         
         stage('Sonarqube scan SAST') {
             steps {
-              bat "mvn clean verify sonar:sonar -Dsonar.projectKey=appsample -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_148b7e3ab3857e43ff35306a582c545fb0ade313"
+             // bat "mvn clean verify sonar:sonar -Dsonar.projectKey=appsample -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_148b7e3ab3857e43ff35306a582c545fb0ade313"
 
             }
                            
@@ -87,4 +87,12 @@ pipeline {
     
           
     }
+	post {
+    success {
+      mail to: "parthamaiti.bk@gmail.com", subject:"SUCCESS: ${currentBuild.fullDisplayName}", body: "Yay, we passed."
+    }
+    failure {
+      mail to: "parthamaiti.bk@gmail.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Boo, we failed."
+    }
+  }
 }
