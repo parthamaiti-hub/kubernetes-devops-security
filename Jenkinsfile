@@ -13,7 +13,7 @@ pipeline {
        }
        stage('unit test') {
             steps {
-              bat "mvn test"
+              sh "mvn test"
             }
            post {
                always {
@@ -39,7 +39,7 @@ pipeline {
         /*
         stage('Sonarqube scan SAST') {
             steps {
-              bat "mvn clean verify sonar:sonar -Dsonar.projectKey=appsample -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_148b7e3ab3857e43ff35306a582c545fb0ade313"
+              sh "mvn clean verify sonar:sonar -Dsonar.projectKey=appsample -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_148b7e3ab3857e43ff35306a582c545fb0ade313"
 
             }
                            
@@ -48,7 +48,7 @@ pipeline {
         /*
         stage('Vulnerability Scan Dependencies check') {
             steps {
-              bat "mvn dependency-check:check"
+              sh "mvn dependency-check:check"
             }
             post {
                always {
@@ -63,8 +63,8 @@ pipeline {
         stage('Docker build and Push') {
 	      steps{
 	        withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
-	          bat 'docker build -t parthamaiti/numeric-app:"test" .'
-	          bat 'docker push parthamaiti/numeric-app:"test"'
+	          sh 'docker build -t parthamaiti/numeric-app:"test" .'
+	          sh 'docker push parthamaiti/numeric-app:"test"'
 	        }
 	      }
 	    }
@@ -72,7 +72,7 @@ pipeline {
 	    stage(' Find kubernetes details') {
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig']) {
-                bat 'kubectl get all'
+                sh 'kubectl get all'
             }
             }
         }
@@ -80,7 +80,7 @@ pipeline {
 	    stage('Kubernetes Deployment -DEV')  {
 	      steps{
 	        withKubeConfig([credentialsId: 'kubeconfig']) {
-	           bat "kubectl apply -f k8s_deployment_service.yaml"
+	           sh "kubectl apply -f k8s_deployment_service.yaml"
 	        }
 	      }
 	    }
@@ -89,10 +89,10 @@ pipeline {
     }
 	post {
     success {
-      mail to: "parthamaiti.bk@gmail.com", subject:"SUCCESS: ${currentBuild.fullDisplayName}", body: "Yay, we passed."
+      mail to: "parthamaiti.conn@gmail.com", subject:"SUCCESS: ${currentBuild.fullDisplayName}", body: "Yay, we passed."
     }
     failure {
-      mail to: "parthamaiti.bk@gmail.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Boo, we failed."
+      mail to: "parthamaiti.conn@gmail.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Boo, we failed."
     }
   }
 }
