@@ -7,7 +7,7 @@ pipeline {
   stages {
       stage('Build Artifact') {
             steps {
-              bat "mvn clean package -DskipTests=true"
+              sh "mvn clean package -DskipTests=true"
               archive 'target/*.jar' //so that they can be downloaded later
             }
        }
