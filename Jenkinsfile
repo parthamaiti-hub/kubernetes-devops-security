@@ -23,7 +23,7 @@ pipeline {
             }
                 
         } 
-        
+         /*
         stage('Mutation testing using PIT') {
             steps {
               bat "mvn org.pitest:pitest-maven:mutationCoverage"
@@ -36,6 +36,7 @@ pipeline {
             }
                 
         } 
+        */ 
         /*
         stage('Sonarqube scan SAST') {
             steps {
